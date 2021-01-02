@@ -1,0 +1,6 @@
+<h1>Aao saay aao</h1>
+{% for dbb in dbba %}
+<p>{{dbb.title}}</p>
+<img src="{{dbb.image.url}}" alt='cool'>
+{% endfor %}
+<a href="{% url 'addproject' user.get_username %}">Add Project</a>

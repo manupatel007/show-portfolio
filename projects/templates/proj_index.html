@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+
+{% for project in projects %}
+<img src='{% static project.image %}' alt="cool" style="width:50px; height: 50px;">
+<p>{{project.title}}</p>
+<p>Technology Used:{{project.technology}}</p>
+<p>Description:{{project.description}}</p>
+<br>
+{% endfor %}
+
+{% endblock %}
