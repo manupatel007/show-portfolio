@@ -26,7 +26,7 @@ SECRET_KEY = '4-lvk1!axv_$wxvib^3874#hhzxz2r7q=-5xy07vsv=18e=(kd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['f69ef74f6311.ngrok.io','127.0.0.1']
 
 
 # Application definition
@@ -122,8 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = 'portfolio'
+LOGOUT_REDIRECT_URL = 'registration'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

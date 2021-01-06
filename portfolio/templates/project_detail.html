@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<style>
+    html,body {
+    height: 100%;
+    margin: 0;
+}
+
+.Container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.leftc {
+    padding:8px;
+    float: left;
+    width: 20%;
+    height: 100%;
+    border-right: solid black;
+}
+
+.rightc {
+    padding-left:2%;
+    float: left;
+    width: 79.9%;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.photu {
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.card-text {
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.card{
+    margin-top:10%;
+}
+
+</style>
+
+<div class="Container">
+    <div class="leftc">
+        {% for infi in info %}
+            <div class="nyi">
+                <img class="photu" src="{{infi.profile_pic.url}}" alt='cool' width='80%' height='20%'>
+            </div>
+            <h2 style='text-align:center'><strong>{{user.get_full_name}}</strong></h2>
+            <p style='text-align:center'><i>{{user.username}}</i></p>
+            <p><strong>Bio: </strong>{{infi.bio}}</p>
+        {% empty %}
+            <div class="nyi">
+                <img class="photu" src="https://www.w3schools.com/howto/img_avatar2.png" alt='cool' width='80%' height='20%'>
+            </div>
+            <h2 style='text-align:center'><strong>{{user.get_full_name}}</strong></h2>
+            <p style='text-align:center'><i>{{user.username}}</i></p>
+        {% endfor %}
+        <a class="btn btn-outline-primary btn-block" href="{% url 'completeprofile' user.username %}" role="button">Edit Profile</a>
+        <a class="btn btn-outline-primary btn-block" href="{% url 'addproject' user.username %}" role="button">+ Add Project</a>
+    </div>
+    <div class="rightc">
+        {% for dbb in dbba %}
+            <h1 style="text-align:center">{{dbb.title}}</h1>
+            <br>
+            <p><strong>Technology Used: </strong>{{dbb.technology}}</p>
+            <p><strong>Desription: </strong>{{dbb.description}}</p>
+            <br>
+            <p><strong>Screenshots:</strong></p>
+            <br>
+            <img src="{{dbb.img1.url}}" alt="jai ho" width='80%' height='auto'>
+            <br>
+            <br>
+            <img src="{{dbb.img2.url}}" alt="jai ho" width='80%' height='auto'>
+            <br>
+            <br>
+            <img src="{{dbb.img3.url}}" alt="jai ho" width='80%' height='auto'>
+            <br>
+            <br>
+            <p><strong>Souce Code Link: </strong><a href="{{dbb.source_code}}">Github link</p>
+        {% endfor %}
+    </div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
