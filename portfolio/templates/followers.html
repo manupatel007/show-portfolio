@@ -1,6 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Your Followers</h1>
 {% for dbb in dbba %}
 <p>{{dbb.followers}}</p>
 {% empty %}
 <p>No followers yet</p>
 {% endfor %}
+{% endblock %}

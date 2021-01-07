@@ -1,6 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Persons You Follow</h1>
 {% for dbb in dbba %}
 <p>{{dbb.following}}</p>
 {% empty %}
 <p>You have not followed anyone yet</p>
 {% endfor %}
+
+{% endblock %}

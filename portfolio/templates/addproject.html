@@ -1,4 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% load static %}
+
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,3 +65,5 @@ var fileName = $(this).val().split("\\").pop();
 $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 });
 </script>
+
+{% endblock %}

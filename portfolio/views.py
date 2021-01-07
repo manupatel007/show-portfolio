@@ -146,7 +146,7 @@ def project_describe(request, pk):
 
         else:
             info = NewFields.objects.filter(person__username__contains=personp)
-            val = FollowingField.objects.filter(person__username__contains=personp,following=request.user.username)
+            val = FollowersField.objects.filter(person__username__contains=personp,followers=request.user.username)
             if val:
                 context = {
                             'dbba':dbba,

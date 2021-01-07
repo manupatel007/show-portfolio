@@ -1,6 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Your Notifications</h1>
 {% for dbb in dbba %}
 <p>{{dbb.notifications}}</p>
 {% empty %}
 <p>No notifications yet</p>
 {% endfor %}
+
+{% endblock %}
