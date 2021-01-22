@@ -7,23 +7,34 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 #from django.utils.decorators import method_decorator
 from django.views import View
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required
 def portfolio(request):
     personp = request.user.username
     dbba = Project.objects.filter(person__username__contains=personp)
     info = NewFields.objects.filter(person__username__contains=personp)
+    followers = FollowersField.objects.filter(person__username__contains=personp).count()
+    following = FollowingField.objects.filter(person__username__contains=personp).count()
+    #notifications = NotificationsField.objects.filter(person__username__contains=personp)
     context = {
         'dbba':dbba,
         'info':info,
+        'followers':followers,
+        'following':following,
+        #'notifications':notifications,
     }
     return render(request,'portfolio.html',context)
 
+@login_required
 def addproject(request,personp):
+    #notifications = NotificationsField.objects.filter(person__username__contains=personp)
     if request.method == 'GET':
         context = {
             'form': AddProject,
+            #'notifications': notifications,
         }
         return render(request,'addproject.html', context)
     else:
@@ -46,10 +57,13 @@ def addproject(request,personp):
             #yha bhari cheez ane wali h(notifications)
             User = get_user_model()
             val = FollowersField.objects.filter(person__username__contains=request.user.username)
+            sending_person = NewFields.objects.filter(person__username__contains=request.user.username)[0]
             for v in val:
                 user1 = User.objects.filter(username=v.followers)[0]
-                shi_dbba = NotificationsField(person=user1, notifications=request.user.username+" recently added a project")
+                #user1 = NewFields.objects.filter(person__username__contains=v.followers)[0]
+                shi_dbba = NotificationsField(person=user1, sender=sending_person, Pid=sup.id, notifications=request.user.username+" recently added a project")
                 shi_dbba.save()
+                print(shi_dbba.notifications)
             dbba = Project.objects.filter(person__username__contains=personp)
             info = NewFields.objects.filter(person__username__contains=personp)
             context = {
@@ -58,7 +72,7 @@ def addproject(request,personp):
             }
             #return render(request,'portfolio.html',context)
             return redirect(reverse('portfolio'))
-
+@login_required
 def completeprofile(request, personp):
     if request.method == 'GET':
         context = {
@@ -101,15 +115,19 @@ def completeprofile(request, personp):
                 else:
                     return HttpResponse("Unsuccessfull")
 
+@login_required
 def project_detail(request,pk,personp):
     dbba = Project.objects.filter(id=pk)
     info = NewFields.objects.filter(person__username__contains=personp)
+    #notifications = NotificationsField.objects.filter(person__username__contains=personp)
     context = {
                 'dbba':dbba,
                 'info':info,
+                #'notifications':notifications,
             }
     return render(request,'project_detail.html',context)
 
+@login_required
 def project_home(request):
     dbba = Project.objects.all()
     context = {
@@ -176,6 +194,22 @@ def following(request):
     }
     return render(request,'following.html', context)
 
+
+def other_followers(request,personp):
+    dbba = FollowersField.objects.filter(person__username__contains=personp)
+    context = {
+        'dbba':dbba,
+    }
+    return render(request,'followers.html', context)
+
+def other_following(request,personp):
+    dbba = FollowingField.objects.filter(person__username__contains=personp)
+    context = {
+        'dbba':dbba,
+    }
+    return render(request,'following.html', context)
+
+
 def notifications(request):
     dbba = NotificationsField.objects.filter(person__username__contains=request.user.username)
     context = {
@@ -186,3 +220,75 @@ def notifications(request):
 class NotificationCheck(View):
     def get(self, request):
         return HttpResponse(NotificationsField.objects.all().count())
+
+def view_portfolio(request, personp):
+    #personp = request.user.username
+    if(personp==request.user.username):
+        personp = request.user.username
+        dbba = Project.objects.filter(person__username__contains=personp)
+        info = NewFields.objects.filter(person__username__contains=personp)
+        followers = FollowersField.objects.filter(person__username__contains=personp).count()
+        following = FollowingField.objects.filter(person__username__contains=personp).count()
+        #notifications = NotificationsField.objects.filter(person__username__contains=personp)
+        context = {
+            'dbba':dbba,
+            'info':info,
+            'followers':followers,
+            'following':following,
+            #'notifications':notifications,
+        }
+        return render(request,'portfolio.html',context)
+    else:
+        if request.method == 'POST':
+            val = FollowingField(person=request.user, following=personp)
+            val.save()
+            User = get_user_model()
+            user1 = User.objects.filter(username=personp)[0]
+            val = FollowersField(person=user1, followers=request.user.username)
+            val.save()
+            #info = NewFields.objects.filter(person__username__contains=personp)
+            dbba = Project.objects.filter(person__username__contains=personp)
+            dbbu = dbba[0]
+            info = NewFields.objects.filter(person__username__contains=personp)
+            followers = FollowersField.objects.filter(person__username__contains=personp).count()
+            following = FollowingField.objects.filter(person__username__contains=personp).count()
+            context = {
+                'dbba':dbba,
+                'info':info,
+                'followers':followers,
+                'following':following,
+                'dbbu':dbbu,
+                'bool':True,
+                #'notifications':notifications,
+            }
+            return render(request,'view_portfolio.html',context)
+        else:
+            val = FollowersField.objects.filter(person__username__contains=personp,followers=request.user.username)
+            dbba = Project.objects.filter(person__username__contains=personp)
+            dbbu = dbba[0]
+            info = NewFields.objects.filter(person__username__contains=personp)
+            followers = FollowersField.objects.filter(person__username__contains=personp).count()
+            following = FollowingField.objects.filter(person__username__contains=personp).count()
+            #notifications = NotificationsField.objects.filter(person__username__contains=personp)
+            if val:
+                context = {
+                    'dbba':dbba,
+                    'info':info,
+                    'followers':followers,
+                    'following':following,
+                    'dbbu':dbbu,
+                    'bool':True,
+                    #'notifications':notifications,
+                }
+                return render(request,'view_portfolio.html',context)
+            else:
+                context = {
+                    'dbba':dbba,
+                    'info':info,
+                    'followers':followers,
+                    'following':following,
+                    'dbbu':dbbu,
+                    'bool':False,
+                    #'notifications':notifications,
+                }
+                return render(request,'view_portfolio.html',context)

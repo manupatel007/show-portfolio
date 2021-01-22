@@ -12,8 +12,11 @@ urlpatterns = [
     path('project_describe/<int:pk>/', views.project_describe, name='project_describe'),
     path('followers/', views.followers, name='followers'),
     path('following/', views.following, name='following'),
+    path('followers/<personp>/', views.other_followers, name='other_followers'),
+    path('following/<personp>/', views.other_following, name='other_following'),
     path('notifications/', views.notifications, name='notifications'),
     path('portfolio/ajax_notification/', views.NotificationCheck.as_view()),
+    path('view_portfolio/<personp>/', views.view_portfolio, name='view_portfolio'),
 ]
 
 if settings.DEBUG:

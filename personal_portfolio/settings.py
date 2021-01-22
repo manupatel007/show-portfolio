@@ -66,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #Made by me:-(Actually by stackoverflow)
+                'portfolio.context_processors.notification_processor',
             ],
         },
     },

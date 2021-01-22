@@ -8,20 +8,26 @@
             <div class="nyi">
                 <img class="photu" src="{{infi.profile_pic.url}}" alt='cool' width='80%' height='20%'>
             </div>
-            <h2 style='text-align:center'><strong>{{user.get_full_name}}</strong></h2>
-            <p style='text-align:center'><i>{{user.username}}</i></p>
-            <a href="{% url 'following' %}"><p><span class="badge badge-primary">{{following}}</span> Following</p></a>
-            <a href="{% url 'followers' %}"><p><span class="badge badge-primary">{{followers}}</span> Followers</p></a>
+            <h2 style='text-align:center'><strong>{{infi.person.get_full_name}}</strong></h2>
+            <p style='text-align:center'><i>{{infi.person.username}}</i></p>
+            <a href="{% url 'other_following' infi.person.username %}"><p><span class="badge badge-primary">{{following}}</span> Following</p></a>
+            <a href="{% url 'other_followers' infi.person.username %}"><p><span class="badge badge-primary">{{followers}}</span> Followers</p></a>
             <p><strong>Bio: </strong>{{infi.bio}}</p>
         {% empty %}
             <div class="nyi">
                 <img class="photu" src="https://www.w3schools.com/howto/img_avatar2.png" alt='cool' width='80%' height='20%'>
             </div>
-            <h2 style='text-align:center'><strong>{{user.get_full_name}}</strong></h2>
-            <p style='text-align:center'><i>{{user.username}}</i></p>
+            <h2 style='text-align:center'><strong>{{infi.person.get_full_name}}</strong></h2>
+            <p style='text-align:center'><i>{{infi.person.username}}</i></p>
         {% endfor %}
-        <a class="btn btn-outline-primary btn-block" href="{% url 'completeprofile' user.username %}" role="button">Edit Profile</a>
-        <a class="btn btn-outline-primary btn-block" href="{% url 'addproject' user.username %}" role="button">+ Add Project</a>
+        {% if bool %}
+            <button type="submit" class="btn btn-outline-primary btn-block">Following</button>
+        {% else %}
+        <form action="{% url 'view_portfolio' dbbu.person.username %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-primary btn-block">Follow</button>
+        </form>
+        {% endif %}
         <br>
         <h4><strong>Skills</strong></h4>
         <hr>
@@ -40,7 +46,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{dbb.title}}</h5>
                         <p class="card-text">{{dbb.description}}</p>
-                        <a href="{%url 'project_detail' dbb.id user.username %}" class="btn btn-primary">Go to project</a>
+                        <a href="{%url 'project_describe' dbb.id %}" class="btn btn-primary">Go to project</a>
                     </div>
                 </div>
             </div>

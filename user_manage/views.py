@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
 from user_manage.forms import CustomUserCreationForm
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -20,3 +21,5 @@ def registration(request):
             user = form.save()
             login(request,user)
             return redirect(reverse('portfolio'))
+        else:
+            return HttpResponse("Username is already taken")

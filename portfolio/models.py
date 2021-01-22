@@ -49,6 +49,11 @@ class NotificationsField(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+    sender = models.ForeignKey(
+        NewFields,
+        on_delete=models.CASCADE,
+        null = True,
+    )
+    Pid = models.IntegerField(null=True)
     notifications = models.CharField(max_length=200)
-
-
+    read = models.BooleanField(default=True)
